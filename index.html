@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun Sayang! ❤️</title>
+    <!-- Font Google Estetik -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Library Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- ==================== BAGIAN CSS ==================== -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffdde1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: #4a4a4a;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Animasi Hati Melayang di Latar Belakang */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart-particle {
+            position: absolute;
+            bottom: -20px;
+            font-size: 20px;
+            opacity: 0.6;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Halaman Pembuka (Kado/Amplop) */
+        #opening-screen {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 105, 135, 0.25);
+            max-width: 400px;
+            width: 100%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .gift-icon {
+            font-size: 75px;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        h1.title-open {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.3rem;
+            color: #ff4d6d;
+            margin-bottom: 10px;
+        }
+
+        .btn-open {
+            margin-top: 22px;
+            padding: 13px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        /* Halaman Utama Ucapan */
+        #main-content {
+            position: relative;
+            z-index: 10;
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px 25px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .photo-frame {
+            width: 185px;
+            height: 185px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(45deg, #ff4d6d, #ffb3c1);
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.35);
+            overflow: hidden;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%; /* Fokus ke wajah pada foto */
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        h2.birthday-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.6rem;
+            color: #ff4d6d;
+            margin-bottom: 15px;
+        }
+
+        .message-box {
+            background: #fff0f3;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #590d22;
+            min-height: 155px;
+            text-align: left;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff4d6d;
+            box-shadow: inset 0 2px 6px rgba(255, 77, 109, 0.08);
+        }
+
+        /* Tombol Interaktif Tambahan */
+        .wish-section {
+            margin-top: 15px;
+        }
+
+        .btn-wish {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .btn-wish:hover {
+            transform: scale(1.04);
+        }
+
+        /* Modal Popup Pesan Manis */
+        #love-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 20px;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Kontrol Musik Melayang */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 30px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ff4d6d;
+            z-index: 100;
+            transition: transform 0.2s;
+        }
+
+        .music-control:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sembunyikan iframe YouTube audio player */
+        #youtube-player {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container Animasi Hati -->
+    <div class="floating-hearts" id="hearts-container"></div>
+
+    <!-- Pemutar Musik YouTube Tersembunyi (Ed Sheeran - Perfect) -->
+    <div id="youtube-player"></div>
+
+    <!-- Tombol Play/Pause Musik -->
+    <div class="music-control" id="music-btn" onclick="toggleMusic()">
+        <span id="music-icon">🎵</span>
+        <span>Perfect - Ed Sheeran</span>
+    </div>
+
+    <!-- ==================== BAGIAN HTML ==================== -->
+    <!-- 1. Tampilan Awal -->
+    <div id="opening-screen">
+        <div class="gift-icon" onclick="openSurprise()">🎁</div>
+        <h1 class="title-open">Ada Kejutan Buat Kamu!</h1>
+        <p style="font-size: 0.9rem; color: #777;">Klik tombol di bawah ini untuk membukanya ya...</p>
+        <button class="btn-open" onclick="openSurprise()">Buka Sekarang ✨</button>
+    </div>
+
+    <!-- 2. Tampilan Utama -->
+    <div id="main-content">
+        <div class="photo-frame">
+            <!-- Pastikan file foto disimpan dengan nama foto.jpg di folder yang sama -->
+            <img src="foto.jpg" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80'" alt="Foto Kita Berdua">
+        </div>
+        
+        <h2 class="birthday-name">Happy Birthday, Sayang! 🎉</h2>
+        
+        <div class="message-box">
+            <span id="typed-text"></span>
+        </div>
+
+        <div class="wish-section">
+            <button class="btn-wish" onclick="triggerLove()">Kirim Peluk & Doa ❤️🎂</button>
+        </div>
+    </div>
+
+    <!-- 3. Popup Doa -->
+    <div id="love-modal" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div style="font-size: 50px; margin-bottom: 10px;">🥰🎂❤️</div>
+            <h3 style="color: #ff4d6d; margin-bottom: 10px;">Yeay!</h3>
+            <p style="font-size: 0.9rem; line-height: 1.6; color: #555; margin-bottom: 20px;">
+                Semoga semua harapan dan cita-citamu terkabul di tahun ini ya. Terima kasih sudah selalu ada di sisiku!
+            </p>
+            <button class="btn-wish" onclick="closeModal()">Tutup ✨</button>
+        </div>
+    </div>
+
+    <!-- ==================== BAGIAN JAVASCRIPT ==================== -->
+    <script>
+        // 1. Konfigurasi Teks Ucapan
+        const message = "Selamat ulang tahun ya! Terima kasih sudah hadir dan selalu jadi alasan aku tersenyum setiap hari. Semoga di umur yang baru ini kamu selalu diberi kesehatan, kebahagiaan, dan semua impianmu tercapai. Aku sayang kamu hari ini, besok, dan seterusnya! ❤️";
+        let index = 0;
+        const speed = 45; // Kecepatan ketik dalam milidetik
+
+        // 2. Setup YouTube IFrame API untuk Lagu "Perfect - Ed Sheeran"
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        var isPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: '2Vv-BfVoq4g', // ID Video Resmi Ed Sheeran - Perfect
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': '2Vv-BfVoq4g'
+                },
+                events: {
+                    'onReady': function(event) {
+                        event.target.setVolume(80);
+                    }
+                }
+            });
+        }
+
+        // 3. Fungsi Membuka Kejutan
+        function openSurprise() {
+            document.getElementById("opening-screen").style.display = "none";
+            document.getElementById("main-content").style.display = "block";
+            document.getElementById("music-btn").style.display = "flex";
+
+            // Putar lagu Ed Sheeran - Perfect
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+                isPlaying = true;
+            }
+
+            // Jalankan efek konfeti, ketikan, dan hati melayang
+            fireConfetti();
+            typeWriter();
+            startFloatingHearts();
+        }
+
+        // 4. Efek Mesin Ketik
+        function typeWriter() {
+            if (index < message.length) {
+                document.getElementById("typed-text").innerHTML += message.charAt(index);
+                index++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        // 5. Efek Konfeti
+        function fireConfetti() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // 6. Kontrol Play/Pause Musik
+        function toggleMusic() {
+            const musicIcon = document.getElementById("music-icon");
+            if (!player) return;
+
+            if (isPlaying) {
+                player.pauseVideo();
+                musicIcon.innerHTML = "🔇";
+                isPlaying = false;
+            } else {
+                player.playVideo();
+                musicIcon.innerHTML = "🎵";
+                isPlaying = true;
+            }
+        }
+
+        // 7. Tombol Peluk & Doa (Modal + Confetti)
+        function triggerLove() {
+            fireConfetti();
+            document.getElementById("love-modal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("love-modal").style.display = "none";
+        }
+
+        // 8. Animasi Hati Melayang di Latar Belakang
+        function startFloatingHearts() {
+            const container = document.getElementById("hearts-container");
+            const icons = ["❤️", "💖", "💕", "✨", "🌸"];
+            
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.classList.add("heart-particle");
+                heart.innerText = icons[Math.floor(Math.random() * icons.length)];
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+                heart.style.fontSize = (Math.random() * 12 + 14) + "px";
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }, 600);
+        }
+    </script>
+</body>
+</html>
